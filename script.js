@@ -1,4 +1,3 @@
-// Funções básicas de controle de tema/menu (mantidas dos exemplos de snippet)
 function openMenu() { document.getElementById("menu_aba").style.display = "block"; } [18-20]
 function closeMenu() { document.getElementById("menu_aba").style.display = "none"; } [18, 19, 21]
 function temaLim() { 
@@ -6,7 +5,6 @@ function temaLim() {
     document.documentElement.style.setProperty('--cor-sombra', '#9b0a59'); 
     document.documentElement.style.setProperty('--cor-text', 'black'); 
     document.documentElement.style.setProperty('--cor-back1', '#CEF09D'); 
-    // Outras propriedades... 
 } [18, 19, 21]
 function temaInatel() { 
     document.documentElement.style.setProperty('--cor-click', '#126ae2'); 
@@ -63,7 +61,6 @@ class ArmarioComponent extends HTMLElement {
         const armariosDisponiveisCount = this.totalLockers - armariosEmUso;
         const armariosDoUsuario = this.armarios.filter(a => a.status === 'reservado' || a.status === 'pendente_renovacao');
         
-        // estilos inseridos no dom
         this.shadowRoot.innerHTML = `
             <style>
                 /* Estilos copiados do style.css para o Shadow DOM */
@@ -71,6 +68,7 @@ class ArmarioComponent extends HTMLElement {
                     background-color: white; padding: 15px; margin: 0; 
                     border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
                     color: black; font-family: 'Arimo', sans-serif;
+                    margin: 20px;
                 }
                 .titulo-funcionalidade {
                     font-size: 18px; font-weight: bold; margin-bottom: 15px;
@@ -80,6 +78,7 @@ class ArmarioComponent extends HTMLElement {
                     padding: 12px; margin-bottom: 12px; border-radius: 8px;
                     border: 1px solid #ddd; display: flex; justify-content: space-between;
                     align-items: center; background-color: #fafafa;
+                    margin: 20px;
                 }
                 .armario-card h3 { margin: 0; font-size: 14px; color: var(--cor-click); }
                 .armario-card p { margin: 3px 0; font-size: 11px; }
@@ -89,6 +88,7 @@ class ArmarioComponent extends HTMLElement {
                 .status-disponivel-box {
                     text-align: center; background-color: var(--cor-back1, #edf2f4);
                     padding: 10px; border-radius: 5px; font-weight: bold; color: black;
+                    margin: 20px;
                 }
                 .action-button {
                     background-color: var(--cor-click, #126ae2); color: white;
@@ -107,13 +107,17 @@ class ArmarioComponent extends HTMLElement {
                     width: 100%; padding: 10px; border: 1px solid #ccc;
                     border-radius: 5px; box-sizing: border-box;
                     font-family: 'Arimo', sans-serif;
+                    margin: 5px;
+                }
+                .form-field label {
+                    font-size: 14px;
                 }
             </style>
             
             <div class="comp-armario">
-                <div class="titulo-funcionalidade">Gerenciamento de Armários (Solicitação & Renovação)</div>
+
+                <h2>Meus Armários</h2>
                 
-                <h2>Meus Armários (${this.usuario.nome})</h2>
                 ${armariosDoUsuario.length === 0 ? `<p>Você não possui armários reservados.</p>` : ''}
 
                 ${armariosDoUsuario.map(armario => {
@@ -147,7 +151,7 @@ class ArmarioComponent extends HTMLElement {
                 
                 <div id="solicitar-form">
                     <div class="form-field">
-                        <label for="tempo">Período de Uso (máx. 15 dias):</label>
+                        <label for="tempo">Período de Uso:</label>
                         <select id="tempo">
                             <option value="7">7 dias (Padrão)</option>
                             <option value="15">15 dias (Máximo)</option>
@@ -170,7 +174,6 @@ class ArmarioComponent extends HTMLElement {
     }
 
     addEventListeners() {
-        // registrando event listener pra renovação e solicitação
         this.shadowRoot.querySelectorAll('.renew-btn').forEach(button => {
             button.addEventListener('click', (e) => this.handleRenovacao(e.target.dataset.id));
         });
@@ -189,7 +192,6 @@ class ArmarioComponent extends HTMLElement {
             return;
         }
         
-        // calculando nova data de validade
         const newDate = new Date();
         newDate.setDate(newDate.getDate() + 15);
         armario.data_renovacao = this.formatDate(newDate); 
@@ -244,8 +246,7 @@ class ArmarioComponent extends HTMLElement {
         feedbackEl.textContent = `SUCESSO: Armário #${novoId} (Projeto: ${projeto}) reservado por ${tempo} dias. Seu acesso RFID está ativo. (Heurística 1, 5)`;
         feedbackEl.className = 'feedback-message feedback-success';
         feedbackEl.style.display = 'block';
-        
-        // limpa o formulário e renderiza vagas
+
         projetoInput.value = '';
         this.render();
     }
